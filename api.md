@@ -1,4 +1,5 @@
 FORMAT: 1A
+
 HOST: http://localhost:5001/
 
 # Sport Gear Catalog
@@ -15,7 +16,7 @@ List all sports that the catalog has gears for.
         Baseball
         Basketball
 
-### Group Gears [/catalog/{sport_name}]
+### Gears [/catalog/{sport_name}]
 Showing gears and gear details of a sport
 
 + Parameters
@@ -30,7 +31,7 @@ List all gears in a specific sport
         Goggles
         Snowboard
 
-#### Group Gear Details [/catalog/{sport_name}/{gear_name}]
+#### Gear Details [/catalog/{sport_name}/{gear_name}]
 
 + Parameters
 
@@ -64,9 +65,9 @@ REST API endpoints
 
 + Parameters
 
-    + version: `v1` (string) - API version
+    + version: `v0.1` (string) - API version
 
-### Sport Collection [GET /api/{version}/catalog]
+### Sports API [GET /api/{version}/catalog]
 List all sports that the catalog has gears for.
 
 + Response 200 (application/json)
@@ -101,7 +102,7 @@ List all sports that the catalog has gears for.
             }
         ]
 
-#### Group Gears [/api/{version}/{sport_name}]
+#### Gears API [/api/{version}/{sport_name}]
 
 + Parameters
 
@@ -126,7 +127,7 @@ List all gears in a sport
         ]
 
 ##### Gear Details [GET /api/{version}/{sport_name}/{gear_name}]
-Show detail of a gear
+Show details of a gear
 
 + Parameters
 
