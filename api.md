@@ -1,5 +1,4 @@
 FORMAT: 1A
-
 HOST: http://localhost:5001/
 
 # Sport Gear Catalog
@@ -30,6 +29,18 @@ List all gears in a specific sport
 
         Goggles
         Snowboard
+
+#### Add Gear [POST /catalog/{sport_name}]
+
++ Request (application/json)
+
+        {
+            "title": "gloves",
+            "description": "wear it and catch balls",
+            "category": "Soccer"
+        }
+
++ Response 200
 
 #### Gear Details [/catalog/{sport_name}/{gear_name}]
 
