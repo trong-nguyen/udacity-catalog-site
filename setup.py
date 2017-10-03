@@ -33,25 +33,74 @@ def is_db_ok(name):
 		return False
 
 def populate_data(session):
-	# Populating data
-	soccer = Sport(title='Soccer')
-	session.add(soccer)
+	sports = [
+		'Soccer',
+		'Basketball',
+		'Baseball',
+		'Frisbee',
+		'Snowboarding',
+		'Rock Climbing',
+		'Foosball',
+		'Skating',
+		'Hockey'
+	]
+	sports = [Sport(title=t) for t in sports]
+
+	session.add_all(sports)
 	session.commit()
 
-	glove = Gear(
-		title='Glove',
-		description='To catch balls',
-		sport_id=soccer.id
-		)
+	def find_id(name, objects):
+		try:
+			return next(o for o in objects if o.title==name).id
+		except:
+			print 'Error finding id of object with name', name
+			raise
 
-	ball = Gear(
-		title='Ball',
-		description='To allow players score and maneuver',
-		sport_id=soccer.id
-		)
+	gears = [
+		{
+			'title': 'Stick',
+			'description': '',
+			'sport_id': find_id('Hockey', sports)
+		},
+		{
+			'title': 'Goggles',
+			'description': '',
+			'sport_id': find_id('Snowboarding', sports)
+		},
+		{
+			'title': 'Two shinguards',
+			'description': '',
+			'sport_id': find_id('Soccer', sports)
+		},
+		{
+			'title': 'Shinguards',
+			'description': '',
+			'sport_id': find_id('Soccer', sports)
+		},
+		{
+			'title': 'Frisbee',
+			'description': '',
+			'sport_id': find_id('Frisbee', sports)
+		},
+		{
+			'title': 'Bat',
+			'description': '',
+			'sport_id': find_id('Baseball', sports)
+		},
+		{
+			'title': 'Jersey',
+			'description': '',
+			'sport_id': find_id('Soccer', sports)
+		},
+		{
+			'title': 'Soccer Cleats',
+			'description': '',
+			'sport_id': find_id('Soccer', sports)
+		}
+	]
 
-	session.add(glove)
-	session.add(ball)
+	gears = [Gear(**g) for g in gears]
+	session.add_all(gears)
 	session.commit()
 
 if __name__ == '__main__':
