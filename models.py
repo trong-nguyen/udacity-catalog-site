@@ -3,8 +3,10 @@ from sqlalchemy.ext.declarative import declarative_base, declared_attr
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 
+DB_NAME = 'catalog.db'
+
 # create the SQL engine
-engine = create_engine('sqlite:///catalog.db')
+engine = create_engine('sqlite:///{}'.format(DB_NAME))
 
 # initiate and bind it to the Alchemy layer
 Base = declarative_base()
