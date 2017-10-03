@@ -4,6 +4,7 @@ HOST: http://localhost:5001/
 # Sport Gear Catalog
 
 A Catalog Site allows people view sport items, categorized by the sport that they are used
+
 ## Sports [/catalog]
 
 ### List All Sport Categories [GET]
@@ -151,3 +152,14 @@ Show details of a gear
             "description": "To catch balls",
             "category": "Soccer"
         }
+
+## Data Structures
+
+### Sport (object)
++ Title: Soccer (required)
++ Gears (array[Gear], required)
+
+### Gear (object)
++ Title: Gloves (required)
++ Description: Wearable to catch balls easier
++ Category: Soccer

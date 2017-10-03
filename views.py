@@ -2,6 +2,7 @@ from flask import (Flask, jsonify,
 	request, url_for, abort, g,
 	make_response
 	)
+from models import session
 
 app = Flask(__name__)
 

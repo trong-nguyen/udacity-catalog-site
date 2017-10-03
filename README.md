@@ -5,6 +5,11 @@ A Catalog Site For Full-stack Practice Purposes
 
 ## Usage
 
+API:
+- Documented in `api.md`
+- To view the API in pretty format, use [Apiary](http://apiary.io) to load the `api.md`.
+- Otherwise, you can view it in any plain text viewer.
+
 ## Design
 
 ### Mockups
