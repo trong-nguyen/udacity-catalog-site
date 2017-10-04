@@ -13,6 +13,7 @@ body {
 }
 
 #item-panel {
+	float: right;
 	display: inline-block;
 	width: 55%;
 }

@@ -1,31 +1,72 @@
+import json
 from flask import (Flask, jsonify,
 	request, url_for, abort, g,
 	make_response, render_template
 	)
-from models import session
+from models import (
+	Sport, Gear,
+	session,
+	)
 
 app = Flask(__name__)
 
 @app.route('/')
 @app.route('/catalog')
 def show_catalog():
-	return render_template('catalog_latest.html')
+	categories = session.query(Sport).all()
 
-@app.route('/catalog/<string:sport>/items')
-def show_gears(sport):
-	return jsonify([
-		'gloves',
-		'balls',
-		'socks'
-	])
+	num_latest = 10
+	items = session.query(Gear).order_by(Gear.added_on.desc())
+	latest_items = items.limit(num_latest).all()
+	latest_items = [item.serialize for item in items]
+	return render_template(
+		'catalog_latest.html',
+		categories=categories,
+		items=latest_items,
+		)
 
-@app.route('/catalog/<string:sport>/<string:gear>')
-def show_gear(sport, gear):
-	return jsonify({
-		'title': 'gloves',
-		'description': 'wear it and catch balls',
-		'category': 'Soccer'
-	})
+@app.route('/catalog/<string:sport_name>/items')
+def show_gears(sport_name):
+	sport = session.query(Sport).filter_by(title=sport_name).first()
+	if sport is None:
+		return make_response(
+			json.dumps('Invalid sport name: {}'.format(sport_name)),
+			404
+			)
+
+	categories = session.query(Sport).all()
+	items = session.query(Gear).filter_by(sport_id=sport.id).all()
+	return render_template(
+		'catalog_items.html',
+		categories=categories,
+		items=items,
+		category=sport.title
+		)
+
+@app.route('/catalog/<string:sport_name>/<string:gear_name>')
+def show_gear(sport_name, gear_name):
+	sport = session.query(Sport).filter_by(title=sport_name).first()
+	if sport is None:
+		return make_response(
+			json.dumps('Invalid sport name: {}'.format(sport_name)),
+			404
+			)
+
+	q = session.query(Gear)
+	try:
+		item = q.filter_by(sport_id=sport.id, title=gear_name).one()
+	except:
+		return make_response(
+			json.dumps('Invalid gear name: {}'.format(gear_name)),
+			404
+			)
+
+	return render_template(
+		'item_details.html',
+		item=item,
+		category=sport.title
+		)
+
 
 @app.route('/catalog/<string:sport>', methods=['POST'])
 def add_gear(sport):

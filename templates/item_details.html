@@ -1,2 +1,12 @@
-<h2 class="head">{{ item.category }}</h2>
-<p class="item-description">{{ item.description }}</p>
+{% extends "base.html" %}
+
+{% block title %}
+	<title>Item {{ item.title }} for {{ item.category }}</title>
+{% endblock %}
+
+{% block content %}
+	<div class="block">
+		<h2 class="head">{{ item.title }}</h2>
+		<p class="item-description">{{ item.description }}</p>
+	</div>
+{% endblock %}

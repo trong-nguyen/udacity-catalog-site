@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}
+	<title>Catalog Items</title>
+{% endblock %}
+
+{% block content %}
+	<div class="block">
+		{% include "header.html" %}
+	</div>
+	<div>
+		<div class="block" id="category-panel">
+			{% include "categories.html" %}
+		</div>
+		<div class="block" id="item-panel">
+			{% include "items.html" %}
+		</div>
+	</div>
+{% endblock %}
