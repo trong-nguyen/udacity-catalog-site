@@ -1,6 +1,6 @@
 from flask import (Flask, jsonify,
 	request, url_for, abort, g,
-	make_response
+	make_response, render_template
 	)
 from models import session
 
@@ -9,16 +9,7 @@ app = Flask(__name__)
 @app.route('/')
 @app.route('/catalog')
 def show_catalog():
-	return jsonify([
-		{
-			'name': "Soccer",
-			'items': ['a', 'b', 'c']
-		},
-		{
-			'name': "Basketball",
-			'items': ['a', 'e', 'f', 'g']
-		}
-	])
+	return render_template('catalog_latest.html')
 
 @app.route('/catalog/<string:sport>/items')
 def show_gears(sport):
