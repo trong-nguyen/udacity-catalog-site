@@ -1,7 +1,8 @@
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base, declared_attr
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
+from datetime import datetime
 
 DB_NAME = 'catalog.db'
 
@@ -40,6 +41,7 @@ class Gear(Mixin, Base):
 	title = Column(String(128), nullable=False)
 	description = Column(String)
 	sport_id = Column(Integer, ForeignKey('sport.id'), nullable=False)
+	added_on = Column(DateTime, default=datetime.utcnow)
 
 	@property
 	def serialize(self):
@@ -49,7 +51,8 @@ class Gear(Mixin, Base):
 			'id': self.id,
 			'title': self.title,
 			'description': self.description,
-			'category': cat
+			'category': cat,
+			'added_on': self.added_on.strftime('%H:%M:%S %m-%d-%y')
 		}
 
 # physically create the database
