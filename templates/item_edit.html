@@ -1,0 +1,15 @@
+<h2 class="head">Edit Item {{ item.title }}</h2>
+<form action="{{ url_for('edit_item', item_id=item.id) }}">
+	<p>Title</p>
+	<input type="text" size="30" name="title" placeholder="item.title">
+
+	<p>Description</p>
+	<input type="text" name="description" placeholder="item.description">
+
+	<p>Category</p>
+	<input type="dropdown" name="category" placeholder="item.category">
+
+	<div>
+		<input type="submit" value="Submit">
+	</div>
+</form>

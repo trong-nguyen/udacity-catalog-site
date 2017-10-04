@@ -1,0 +1,11 @@
+<h2 class="head">Latest Items</h2>
+<div class="item-collection">
+	{% for item in items %}
+	<div class="item">
+		{{ item.title }}
+		<span class="item-category">
+			({{ item.category }})
+		</span>
+	</div>
+	{% endfor %}
+</div>
