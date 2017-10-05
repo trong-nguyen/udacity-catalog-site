@@ -3,6 +3,7 @@ from sqlalchemy.ext.declarative import declarative_base, declared_attr
 from sqlalchemy.orm import sessionmaker, relationship
 from sqlalchemy import create_engine
 from datetime import datetime
+from passlib.apps import custom_app_context as pwd_context
 
 DB_NAME = 'catalog.db'
 
@@ -16,42 +17,61 @@ Base.metadata.bind = engine
 session = sessionmaker(bind=engine)()
 
 class Mixin(object):
-	"""Implements the basic id and class-name based __tablename__"""
-	@declared_attr
-	def __tablename__(cls):
-		return cls.__name__.lower()
+    """Implements the basic id and class-name based __tablename__"""
+    @declared_attr
+    def __tablename__(cls):
+        return cls.__name__.lower()
 
-	id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True)
+
+
+class User(Mixin, Base):
+    name = Column(String(256))
+    email = Column(String, nullable=False)
+    password_hash = Column(String(64), nullable=False)
+
+    def hash_password(self, password):
+        self.password_hash = pwd_context.hash(password)
+
+    def verify_password(self, password):
+        return pwd_context.verify(password, self.password_hash)
+
+    @property
+    def serialize(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'email': self.email
+        }
 
 
 class Sport(Mixin, Base):
-	title = Column(String(128))
-	gears = relationship('Gear', backref='sport')
+    title = Column(String(256))
+    gears = relationship('Gear', backref='sport')
 
-	@property
-	def serialize(self):
-
-		return {
-			'id': self.id,
-			'title': self.title,
-			'gears': [g.title for g in self.gears]
-		}
+    @property
+    def serialize(self):
+        return {
+            'id': self.id,
+            'title': self.title,
+            'gears': [g.title for g in self.gears]
+        }
 
 class Gear(Mixin, Base):
-	title = Column(String(128), nullable=False)
-	description = Column(String)
-	sport_id = Column(Integer, ForeignKey('sport.id'), nullable=False)
-	added_on = Column(DateTime, default=datetime.utcnow)
+    title = Column(String(256), nullable=False)
+    description = Column(String)
+    sport_id = Column(Integer, ForeignKey('sport.id'), nullable=False)
+    added_on = Column(DateTime, default=datetime.utcnow)
 
-	@property
-	def serialize(self):
-		return {
-			'id': self.id,
-			'title': self.title,
-			'description': self.description,
-			'category': self.sport.title,
-			'added_on': self.added_on.strftime('%H:%M:%S %m-%d-%y')
-		}
+    @property
+    def serialize(self):
+        return {
+            'id': self.id,
+            'title': self.title,
+            'description': self.description,
+            'category': self.sport.title,
+            'added_on': self.added_on.strftime('%H:%M:%S %m-%d-%y')
+        }
 
 # physically create the database
 Base.metadata.create_all(engine)

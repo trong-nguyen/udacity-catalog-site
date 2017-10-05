@@ -1,7 +1,7 @@
 import sys
 import os
 from models import session, DB_NAME
-from models import Sport, Gear
+from models import Sport, Gear, User
 
 
 def is_db_ok(name):
@@ -174,6 +174,32 @@ def populate_data(session):
     gears = [Gear(**g) for g in gears]
     session.add_all(gears)
     session.commit()
+
+
+    # users
+    user_data = [
+        {
+            'name': 'Dale',
+            'email': 'dale@a.com',
+            'password': 'p'
+        },
+        {
+            'name': 'Jenny',
+            'email': 'jen@b.com',
+            'password': 'p'
+        },
+        {
+            'name': 'Trong Nguyen',
+            'email': 'trongn@c.com',
+            'password': 'p'
+        }
+    ]
+    users = [User(name=d['name'], email=d['email']) for d in user_data]
+    for i, user in enumerate(users):
+        user.hash_password(user_data[i]['password'])
+    session.add_all(users)
+    session.commit()
+
 
 if __name__ == '__main__':
     if is_db_ok(DB_NAME):

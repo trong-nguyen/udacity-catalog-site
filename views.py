@@ -4,7 +4,7 @@ from flask import (Flask, jsonify,
 	make_response, render_template
 	)
 from models import (
-	Sport, Gear,
+	Sport, Gear, User,
 	session,
 	)
 
@@ -120,6 +120,25 @@ def api_show_gear(version, sport, gear):
 		'category': 'Soccer'
 	}), 200)
 	return response
+
+@app.route('/register', methods=['POST'])
+def register():
+    body = request.json
+    creds = map(body.get, ['email', 'name', 'password'])
+    print creds
+    if not all(creds):
+        return make_response(
+            json.dumps('Please provide valid email, name, AND password'),
+            400,
+            )
+    email, name, password = creds
+    user = User(email=email, name=name)
+    user.hash_password(password)
+    session.add(user)
+    session.commit()
+
+    return jsonify(user.serialize), 201
+
 
 if __name__ == '__main__':
 	app.secret_key = '03uklsjadf09'
