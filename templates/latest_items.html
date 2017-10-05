@@ -2,7 +2,7 @@
 <div class="item-collection">
 	{% for item in items %}
 	<div class="item">
-		{{ item.title }}
+		<a href="{{ url_for('show_gear', sport_name=item.category, gear_name=item.title) }}">{{ item.title }}</a>
 		<span class="item-category">
 			({{ item.category }})
 		</span>

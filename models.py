@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base, declared_attr
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, relationship
 from sqlalchemy import create_engine
 from datetime import datetime
 
@@ -26,15 +26,15 @@ class Mixin(object):
 
 class Sport(Mixin, Base):
 	title = Column(String(128))
+	gears = relationship('Gear', backref='sport')
 
 	@property
 	def serialize(self):
-		gears = session.query(Gear).filter_by(sport_id=self.id)
 
 		return {
 			'id': self.id,
 			'title': self.title,
-			'gears': [g.title for g in gears]
+			'gears': [g.title for g in self.gears]
 		}
 
 class Gear(Mixin, Base):
@@ -45,13 +45,11 @@ class Gear(Mixin, Base):
 
 	@property
 	def serialize(self):
-		cat = session.query(Sport).filter_by(id=self.sport_id).one().title
-
 		return {
 			'id': self.id,
 			'title': self.title,
 			'description': self.description,
-			'category': cat,
+			'category': self.sport.title,
 			'added_on': self.added_on.strftime('%H:%M:%S %m-%d-%y')
 		}
 

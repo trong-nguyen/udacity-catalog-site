@@ -51,9 +51,9 @@ def populate_data(session):
     session.add_all(sports)
     session.commit()
 
-    def find_id(name, objects):
+    def find_object(name, objects):
         try:
-            return next(o for o in objects if o.title == name).id
+            return next(o for o in objects if o.title == name)
         except:
             print 'Error finding id of object with name', name
             raise
@@ -66,7 +66,7 @@ def populate_data(session):
                 "impressed with the quality of our basketball nets,"
                 "we'll refund your money-no questions asked"
                 ),
-            'sport_id': find_id('Basketball', sports)
+            'sport_name': 'Basketball',
         },
         {
             'title': 'Climbing Harness',
@@ -76,17 +76,17 @@ def populate_data(session):
                 " belt and leg loop are lineed with breathable mesh to"
                 " ensure comfort in warm temperatures."
                 ),
-            'sport_id': find_id('Rock Climbing', sports)
+            'sport_name': 'Rock Climbing',
         },
         {
             'title': 'Foosball Tabletop',
             'description': 'High Quality wood build withstands wear',
-            'sport_id': find_id('Foosball', sports)
+            'sport_name': 'Foosball',
         },
         {
             'title': 'Mondor Knee-High Skating Socks 2 Pairs',
             'description': '85% nylon microfiber, 15% lycra (r) spandex',
-            'sport_id': find_id('Skating', sports)
+            'sport_name': 'Skating',
         },
         {
             'title': 'Nike Swoosh Headband',
@@ -96,7 +96,7 @@ def populate_data(session):
                 'Machine washable, '
                 'Easy care'
                 ),
-            'sport_id': find_id('Basketball', sports)
+            'sport_name': 'Basketball',
         },
         {
             'title': 'Stick',
@@ -104,7 +104,7 @@ def populate_data(session):
                 'Includes official size 65mm low density street'
                 ' hockey ball'
                 ),
-            'sport_id': find_id('Hockey', sports)
+            'sport_name': 'Hockey',
         },
         {
             'title': 'Goggles',
@@ -113,7 +113,7 @@ def populate_data(session):
                 " Goggles Anti Fog UV Protection No Leaking"
                 " for Adult Men Women Kids Swim"
                 ),
-            'sport_id': find_id('Snowboarding', sports)
+            'sport_name': 'Snowboarding',
         },
         {
             'title': 'Two shinguards',
@@ -122,12 +122,12 @@ def populate_data(session):
                 " Child Calf Protective Gear Soccer Equipment"
                 " for 5-12 Years Old Boys Girls Children Teenagers"
                 ),
-            'sport_id': find_id('Soccer', sports)
+            'sport_name': 'Soccer',
         },
         {
             'title': 'Shinguards',
             'description': 'Hard shell with foam backing for added protection',
-            'sport_id': find_id('Soccer', sports)
+            'sport_name': 'Soccer',
         },
         {
             'title': 'Frisbee',
@@ -135,7 +135,7 @@ def populate_data(session):
                 "Discraft 175 gram Ultra-Star Sportdisc-Nite-Glo,"
                 " colors may vary'"
                 ),
-            'sport_id': find_id('Frisbee', sports)
+            'sport_name': 'Frisbee',
         },
         {
             'title': 'Bat',
@@ -144,12 +144,12 @@ def populate_data(session):
                 " Progressive Weighted Ball (9 Pack) PRO Bundle"
                 " for Baseball Softball"
                 ),
-            'sport_id': find_id('Baseball', sports)
+            'sport_name': 'Baseball',
         },
         {
             'title': 'Jersey',
             'description': "adidas Men's Soccer Estro Jersey'",
-            'sport_id': find_id('Soccer', sports)
+            'sport_name': 'Soccer',
         },
         {
             'title': 'Soccer Cleats',
@@ -158,9 +158,18 @@ def populate_data(session):
                 " Flexible Athletic Free Running Light Weight"
                 " Indoor/Outdoor Lace Up Soccer Shoes"
                 ),
-            'sport_id': find_id('Soccer', sports)
+            'sport_name': 'Soccer',
         }
     ]
+
+    # processing the relationship Sport-Gears
+    for gear in gears:
+        obj = find_object(gear['sport_name'], sports)
+        del gear['sport_name']
+        #re-assign
+        gear['sport'] = obj
+        gear['sport_id'] = obj.id
+
 
     gears = [Gear(**g) for g in gears]
     session.add_all(gears)
