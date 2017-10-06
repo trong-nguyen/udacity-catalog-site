@@ -195,8 +195,8 @@ def populate_data(session):
         }
     ]
     users = [User(name=d['name'], email=d['email']) for d in user_data]
-    for i, user in enumerate(users):
-        user.hash_password(user_data[i]['password'])
+    # for i, user in enumerate(users):
+    #     user.hash_password(user_data[i]['password'])
     session.add_all(users)
     session.commit()
 

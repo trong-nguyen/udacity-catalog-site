@@ -3,7 +3,6 @@ from sqlalchemy.ext.declarative import declarative_base, declared_attr
 from sqlalchemy.orm import sessionmaker, relationship
 from sqlalchemy import create_engine
 from datetime import datetime
-from passlib.apps import custom_app_context as pwd_context
 
 DB_NAME = 'catalog.db'
 
@@ -28,13 +27,7 @@ class Mixin(object):
 class User(Mixin, Base):
     name = Column(String(256))
     email = Column(String, nullable=False)
-    password_hash = Column(String(64), nullable=False)
-
-    def hash_password(self, password):
-        self.password_hash = pwd_context.hash(password)
-
-    def verify_password(self, password):
-        return pwd_context.verify(password, self.password_hash)
+    picture = Column(String)
 
     @property
     def serialize(self):
