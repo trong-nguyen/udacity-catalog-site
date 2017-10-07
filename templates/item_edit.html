@@ -1,13 +1,17 @@
+{% if not item %}
+<h2 class="head">New Item</h2>
+{% else %}
 <h2 class="head">Edit Item {{ item.title }}</h2>
-<form action="{{ url_for('edit_item', item_id=item.id) }}">
-	<p>Title</p>
-	<input type="text" size="30" name="title" placeholder="item.title">
+{% endif %}
+<form action="{{ url_for('edit_item') }}">
+    <p>Title</p>
+	<input type="text" size="30" name="title" value="{{ item.title if item else '' }}">
 
 	<p>Description</p>
-	<input type="text" name="description" placeholder="item.description">
+	<input type="text" name="description" value="{{ item.description if item else '' }}">
 
 	<p>Category</p>
-	<input type="dropdown" name="category" placeholder="item.category">
+	<input type="dropdown" name="category" value="{{ item.category if item else '' }}"">
 
 	<div>
 		<input type="submit" value="Submit">
