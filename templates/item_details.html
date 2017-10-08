@@ -11,11 +11,11 @@
         {% if session.email %}
         <div class="crud-menu"></div>
         <span class="crud-button">
-            <a href="{{ url_for('edit_gear', sport=item.category, gear=item.title) }}">Edit</a>
+            <a href="{{ url_for('add_edit_gear', sport=category, gear=item.title) }}">Edit</a>
         </span>
         |
         <span class="crud-button">
-            <a href="{{ url_for('delete_gear', sport=item.category, gear=item.title) }}">Delete</a>
+            <a href="{{ url_for('delete_gear', sport=category, gear=item.title) }}">Delete</a>
         </span>
         {% endif %}
 	</div>

@@ -1,7 +1,7 @@
 import json
 from flask import (Flask, jsonify,
 	request, url_for, abort, g as app_g,
-	make_response, render_template, flash,
+	make_response, render_template, redirect, flash,
     session as user_session,
 	)
 from models import Sport, Gear, User, session as db_session
@@ -243,40 +243,51 @@ def show_gear(sport_name, gear_name):
 		)
 
 
-"""
-HERE
-"""
 @app.route('/catalog/edit')
 def edit_gear():
     data = map(request.args.get, ['title', 'description', 'category'])
 
     if not all(data):
-        return json.dumps('Invalid data {}'.format(data), 400)
+        return json.dumps('No data field should be null {}'.format(data), 400)
 
     title, description, category = data
 
-    cat = db_session.query(Sport).filter_by(title=category).first()
-    if not cat:
+    sport = db_session.query(Sport).filter_by(title=category).first()
+    if not sport:
         return json.dumps('Invalid category {}'.format(category), 400)
 
     gear = db_session.query(Gear).filter_by(title=title).first()
 
     if gear:
         gear.description = description
-        gear.sport = cat
+        gear.sport = sport
     else:
-        gear = Gear(title=title, description=description, sport=cat)
-        db_session.add(gear)
-        db_session.commit()
+        gear = Gear(title=title, description=description, sport=sport)
+
+    db_session.add(gear)
+    db_session.commit()
 
     return jsonify(gear.serialize), 200
 
-@app.route('/catalog/<string:sport>', methods=['POST'])
-def add_gear(sport):
-	item = request.json
-	print 'adding item {}'.format(gear, item)
-	response = make_response(json.dumps('Added {}'.format(item)), 200)
-	return response
+
+@app.route('/catalog/<string:sport>/<string:gear>/edit')
+def add_edit_gear(sport, gear):
+    q = db_session.query(Gear).filter_by(title=gear)
+    s = db_session.query(Sport).filter_by(title=sport).first()
+    all_sports = [si.title for si in db_session.query(Sport).all()]
+    if s:
+        g = q.filter_by(sport_id=s.id).first()
+        if g:
+            return render_template('item_edit.html',
+                item=g.serialize if g else None, categories=all_sports)
+
+    return json.dumps('Invalid sport or gear'), 400
+
+
+@app.route('/catalog/add')
+def add_gear():
+    all_sports = [si.title for si in db_session.query(Sport).all()]
+    return render_template('item_new.html', categories=all_sports)
 
 # @app.route('/catalog/<string:sport>/<string:gear>/edit', methods=['PUT'])
 # def edit_gear(sport, gear):
