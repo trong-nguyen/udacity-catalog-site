@@ -40,3 +40,26 @@ body {
 .head {
     color: #0b1758;
 }
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    align-content: center;
+}
+
+.left {
+    display: inline-block;
+    vertical-align: middle;
+    background: red;
+}
+
+.right {
+    display: inline-block;
+    vertical-align: middle;
+    background: green;
+    height: 3em;
+    width: 6em;
+    line-height: 3em;
+    text-align: center;
+}

@@ -1,13 +1,38 @@
 <div class="header">
-	<h1 class="head">Sport Catalog</h1>
-	{% if not session.email %}
-	<a href="{{ url_for('login') }}">Log in</a>
-	{% else %}
-	<a href="{{ url_for('logout') }}">Log out</a>
-	{% endif %}
+    <!-- <div class="left" style="float: left; line-height: 200px; border: solid 1px;">
+        <div style="display: inline-block; vertical-align: middle;">
+            <span>ABC</span>
+        </div>
+    </div>
+    <div class="right" style="float: right; height: 200px; border: solid 1px;">
+        <div><h3>XYZ</h3></div>
+    </div> -->
+    <div class="left">
+        <h1 class="head">Sport Catalog</h1>
+    </div>
 
+    <div class="right">
+            {% if not session.email %}
+            <a href="{{ url_for('login') }}">Log in</a>
+            {% else %}
+            <a href="{{ url_for('logout') }}">Log out</a>
+            {% endif %}
+    </div>
+
+<!--     <div class="header-left">
+	   <h1 class="head">Sport Catalog</h1>
+    </div>
+    <div class="header-right">
+    	{% if not session.email %}
+    	<a href="{{ url_for('login') }}">Log in</a>
+    	{% else %}
+    	<a href="{{ url_for('logout') }}">Log out</a>
+    	{% endif %}
+    </div>
+
+    {% for message in get_flashed_messages() %}
+    <div class="flash-message">{{ message }}</div>
+    {% endfor %} -->
 	<!-- Display flashed messages -->
-	{% for message in get_flashed_messages() %}
-	<div class="flash-message">{{ message }}</div>
-	{% endfor %}
+
 </div>
