@@ -1,0 +1,39 @@
+<h2 class="head">
+    {% if item %}
+    Edit Item {{ item.title }}
+    {% else %}
+    Add A New Item
+    {% endif %}
+</h2>
+<form action="{{ url_for('add_edit_gear') }}" method="POST">
+    <div>
+        <div>
+            <label for="title">Title</label>
+        </div>
+	    <input type="text" size="30" name="title" value="{{ item.title if item else '' }}">
+    </div>
+
+    <div>
+        <div>
+    	    <label for="description">Description</label>
+        </div>
+    	<textarea type="description" name="description" style="align-content: left">
+            {{ item.description if item else '' }}
+        </textarea>
+    </div>
+
+	<div>
+        <div>
+            <label for="category">Sport</label>
+        </div>
+        <select name=category>
+            {% for cat in categories %}
+                <option>{{cat}}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+	<div>
+		<input type="submit" value="Submit">
+	</div>
+</form>

@@ -12,6 +12,7 @@ from oauth2client.client import (
 import requests
 import random
 import string
+from functools import wraps
 
 app = Flask(__name__)
 
@@ -37,6 +38,7 @@ def get_gplus_token_info(token):
 
 
 def requires_auth(f):
+    @wraps(f)
     def deco(*args, **kwargs):
         if 'email' not in user_session:
             return login()
@@ -65,6 +67,22 @@ def logout():
     return gdisconnect()
 
 
+def clear_session(session):
+    """
+    Clear all session-stored particulars
+    """
+    for state in [
+        'access_token',
+        'gplus_id',
+        'provider',
+        'name',
+        'picture',
+        'email'
+        ]:
+        if state in session:
+            del session[state]
+
+
 def gdisconnect():
     access_token = user_session.get('access_token')
     print access_token
@@ -81,23 +99,17 @@ def gdisconnect():
         ).format(access_token)
 
     res = requests.get(url)
+
+    clear_session(user_session)
+
     if res.ok:
-        for state in [
-            'access_token',
-            'gplus_id',
-            'provider',
-            'name',
-            'picture',
-            'email'
-            ]:
-            del user_session[state]
         return make_response(
             json.dumps('Successfully disconnected from gplus'),
             200
             )
     else:
         return make_response(
-            json.dumps('Failed to revoke tokens'),
+            json.dumps('Failed to revoke tokens, session cleared!'),
             400
             )
 
@@ -243,9 +255,8 @@ def show_gear(sport_name, gear_name):
 		)
 
 
-@app.route('/catalog/edit')
 def edit_gear():
-    data = map(request.args.get, ['title', 'description', 'category'])
+    data = map(request.form.get, ['title', 'description', 'category'])
 
     if not all(data):
         return json.dumps('No data field should be null {}'.format(data), 400)
@@ -270,24 +281,34 @@ def edit_gear():
     return jsonify(gear.serialize), 200
 
 
-@app.route('/catalog/<string:sport>/<string:gear>/edit')
+@app.route('/catalog/<string:sport>/<string:gear>/edit',
+    methods=['GET', 'POST']
+    )
+@app.route('/catalog/add',
+    methods=['GET', 'POST'],
+    defaults={'sport': None, 'gear': None}
+    )
+@requires_auth
 def add_edit_gear(sport, gear):
-    q = db_session.query(Gear).filter_by(title=gear)
-    s = db_session.query(Sport).filter_by(title=sport).first()
-    all_sports = [si.title for si in db_session.query(Sport).all()]
-    if s:
-        g = q.filter_by(sport_id=s.id).first()
-        if g:
-            return render_template('item_edit.html',
-                item=g.serialize if g else None, categories=all_sports)
+    if request.method == 'POST':
+        return edit_gear()
 
-    return json.dumps('Invalid sport or gear'), 400
+    all_sports = [x.title for x in db_session.query(Sport).all()]
 
+    def empty_form():
+        return render_template('item_add_edit.html', categories=all_sports)
 
-@app.route('/catalog/add')
-def add_gear():
-    all_sports = [si.title for si in db_session.query(Sport).all()]
-    return render_template('item_new.html', categories=all_sports)
+    if not all([sport, gear]):
+        return empty_form()
+
+    item = get_item(sport, gear)
+    if not item:
+        return empty_form()
+
+    return render_template('item_add_edit.html',
+        item=item.serialize,
+        categories=all_sports
+        )
 
 # @app.route('/catalog/<string:sport>/<string:gear>/edit', methods=['PUT'])
 # def edit_gear(sport, gear):
@@ -295,10 +316,30 @@ def add_gear():
 # 	response = make_response(json.dumps('Item {} edited'.format(gear)), 200)
 # 	return response
 
-@app.route('/catalog/<string:sport>/<string:gear>/edit', methods=['DELETE'])
+def get_item(sport, gear):
+    """
+    Query an item by sport and gear titles
+    - None if query returns empty
+    - The item otherwise
+    """
+    query = db_session.query(Gear).filter_by(title=gear)
+    res = query.filter(Gear.sport.has(title=sport))
+    return res.first()
+
+
+@app.route('/catalog/<string:sport>/<string:gear>/delete', methods=['GET', 'POST'])
+@requires_auth
 def delete_gear(sport, gear):
-	response = make_response(json.dumps('Deleted gear {}'.format(gear)), 204)
-	return response
+    if request.method == 'GET':
+        return render_template('item_delete.html', sport=sport, gear=gear)
+    elif request.method == 'POST':
+        item = get_item(sport, gear)
+        if item:
+            db_session.delete(item)
+            db_session.commit()
+            return json.dumps('Item deleted'), 200
+        else:
+            return json.dumps('Item not found'), 400
 
 
 @app.route('/api/<string:version>')
@@ -334,32 +375,6 @@ def api_show_gear(version, sport, gear):
 		'category': 'Soccer'
 	}), 200
 	return response
-
-@app.route('/register', methods=['POST'])
-def register():
-    body = request.json
-    creds = map(body.get, ['email', 'name', 'password'])
-
-    if not all(creds):
-        return make_response(
-            json.dumps('Please provide valid email, name, AND password'),
-            400,
-            )
-
-    email, name, password = creds
-
-    if db_session.query(User).filter_by(email=email).first() is not None:
-        return make_response(
-            json.dumps('Email {} has been used'.format(email)),
-            400,
-            )
-
-    user = User(email=email, name=name)
-    user.hash_password(password)
-    db_session.add(user)
-    db_session.commit()
-
-    return jsonify(user.serialize), 201
 
 
 if __name__ == '__main__':

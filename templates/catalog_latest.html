@@ -15,7 +15,7 @@
 		<div class="block" id="item-panel">
             {% if session.email %}
                 <div class="crud-button">
-                    <a href="{{ url_for('add_gear') }}">Add an item</a>
+                    <a href="{{ url_for('add_edit_gear')}}">Add an item</a>
                 </div>
             {% endif %}
 			{% include "latest_items.html" %}
