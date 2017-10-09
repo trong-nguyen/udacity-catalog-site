@@ -28,7 +28,11 @@
         </div>
         <select name=category>
             {% for cat in categories %}
+                {% if item and item.category == cat %}
+                <option selected>{{cat}}</option>
+                {% else %}
                 <option>{{cat}}</option>
+                {% endif %}
             {% endfor %}
         </select>
     </div>

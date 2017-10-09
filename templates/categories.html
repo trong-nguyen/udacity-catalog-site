@@ -1,7 +1,7 @@
 <h2 class="head">Categories</h2>
 <div class="categories">
 	{% for category in categories %}
-	<div>
+	<div class="collection">
 		<a href="{{ url_for('show_gears', sport_name=category.title) }}">{{ category.title }}</a>
 	</div>
 	{% endfor %}

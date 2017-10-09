@@ -1,6 +1,7 @@
 .block {
 	background-color: white;
 	margin: 2px;
+    padding: 10px;
 }
 
 body {
@@ -9,7 +10,7 @@ body {
 
 #category-panel {
 	display: inline-block;
-	width: 40%;
+	width: 41%;
 }
 
 #item-panel {
@@ -21,4 +22,21 @@ body {
 .avatar img {
     width: 150px;
     height: 150px;
+}
+
+.collection {
+    color: #ca670d;
+}
+
+.collection a {
+    color: #ca670d;
+    text-decoration: none;
+}
+
+.collection a:hover {
+    color: #0b1758;
+}
+
+.head {
+    color: #0b1758;
 }
