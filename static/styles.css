@@ -8,16 +8,6 @@ body {
 	background-color: gray;
 }
 
-#category-panel {
-	display: inline-block;
-	width: 41%;
-}
-
-#item-panel {
-	float: right;
-	display: inline-block;
-	width: 55%;
-}
 
 .avatar img {
     width: 150px;
@@ -42,24 +32,53 @@ body {
 }
 
 .header {
+    background: #0b1758;
+    color: white;
+}
+
+.header-inner {
+    max-width: 1024px;
+    margin: auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
     align-content: center;
 }
 
-.left {
-    display: inline-block;
-    vertical-align: middle;
-    background: red;
+.left-column {
+    align-self: center;
+    color: white;
 }
 
-.right {
-    display: inline-block;
-    vertical-align: middle;
-    background: green;
+.right-column {
+    align-self: center;
+    background: #ca670d;
     height: 3em;
     width: 6em;
     line-height: 3em;
     text-align: center;
+}
+
+.right-column a {
+    color: white;
+    text-decoration: none;
+}
+
+.inventory {
+    max-width: 1024px;
+    margin: auto;
+    display: flex;
+    align-items: stretch;
+    justify-content: flex-start;
+}
+
+#category-panel {
+    /*flex-grow: 0;*/
+    /*flex-shrink: 0;*/
+    background: blue;
+}
+
+#item-panel {
+    flex-grow: 1;
+    background: blue;
 }
