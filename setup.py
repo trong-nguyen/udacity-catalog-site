@@ -166,15 +166,12 @@ def populate_data(session):
     for gear in gears:
         obj = find_object(gear['sport_name'], sports)
         del gear['sport_name']
-        #re-assign
         gear['sport'] = obj
         gear['sport_id'] = obj.id
-
 
     gears = [Gear(**g) for g in gears]
     session.add_all(gears)
     session.commit()
-
 
     # users
     user_data = [

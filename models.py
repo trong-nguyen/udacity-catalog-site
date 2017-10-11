@@ -15,6 +15,7 @@ Base.metadata.bind = engine
 
 session = sessionmaker(bind=engine)()
 
+
 class Mixin(object):
     """Implements the basic id and class-name based __tablename__"""
     @declared_attr
@@ -49,6 +50,7 @@ class Sport(Mixin, Base):
             'title': self.title,
             'gears': [g.title for g in self.gears]
         }
+
 
 class Gear(Mixin, Base):
     title = Column(String(256), nullable=False)
