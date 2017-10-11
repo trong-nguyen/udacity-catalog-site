@@ -1,13 +1,20 @@
 .block {
 	background-color: white;
-	margin: 2px;
+	/*margin: 2px;*/
     padding: 10px;
 }
 
 body {
-	background-color: gray;
+	background-color: #e2e2e2;
 }
 
+.limited-view {
+    max-width: 800px;
+}
+
+.center-view {
+    margin: auto;
+}
 
 .avatar img {
     width: 150px;
@@ -15,16 +22,21 @@ body {
 }
 
 .collection {
-    color: #ca670d;
+    color: #F16C20;
 }
 
 .collection a {
-    color: #ca670d;
+    color: #F16C20;
     text-decoration: none;
 }
 
 .collection a:hover {
     color: #0b1758;
+}
+
+a.button {
+    text-decoration: none;
+    color: white;
 }
 
 .head {
@@ -34,10 +46,10 @@ body {
 .header {
     background: #0b1758;
     color: white;
+    margin-bottom: 20px;
 }
 
 .header-inner {
-    max-width: 1024px;
     margin: auto;
     display: flex;
     justify-content: space-between;
@@ -52,33 +64,41 @@ body {
 
 .right-column {
     align-self: center;
-    background: #ca670d;
+    background: #F16C20;
     height: 3em;
     width: 6em;
     line-height: 3em;
     text-align: center;
 }
 
-.right-column a {
-    color: white;
-    text-decoration: none;
-}
-
 .inventory {
-    max-width: 1024px;
     margin: auto;
     display: flex;
-    align-items: stretch;
+    /*align-items: stretch;*/
     justify-content: flex-start;
+    background-color: white;
 }
 
 #category-panel {
-    /*flex-grow: 0;*/
-    /*flex-shrink: 0;*/
-    background: blue;
 }
 
 #item-panel {
     flex-grow: 1;
-    background: blue;
+}
+
+.item-category {
+    color: gray;
+}
+
+.divider {
+    margin: 20px 0;
+    border-left: 1px solid #e2e2e2;
+}
+
+.input-item {
+    margin-top: 10px;
+}
+
+.text-input {
+    width: 400px;
 }

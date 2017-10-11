@@ -1,43 +1,50 @@
-<h2 class="head">
-    {% if item %}
-    Edit Item {{ item.title }}
-    {% else %}
-    Add A New Item
-    {% endif %}
-</h2>
-<form action="{{ url_for('add_edit_gear') }}" method="POST">
-    <div>
-        <div>
-            <label for="title">Title</label>
-        </div>
-	    <input type="text" size="30" name="title" value="{{ item.title if item else '' }}">
-    </div>
+{% extends "form_base.html" %}
 
-    <div>
-        <div>
-    	    <label for="description">Description</label>
-        </div>
-    	<textarea type="description" name="description" style="align-content: left">
-            {{ item.description if item else '' }}
-        </textarea>
-    </div>
+{% block form_title %}
+    <title>Add/Edit Items</title>
+{% endblock %}
 
-	<div>
-        <div>
-            <label for="category">Sport</label>
+{% block form_content %}
+    <h2 class="head">
+            {% if item %}
+            Edit Item {{ item.title }}
+            {% else %}
+            Add A New Item
+            {% endif %}
+    </h2>
+    <form action="{{ url_for('add_edit_gear') }}" method="POST">
+        <div class="input-item">
+            <div>
+                <label for="title">Title</label>
+            </div>
+            <input type="text" size="30" name="title" value="{{ item.title if item else '' }}" class="text-input">
         </div>
-        <select name=category>
-            {% for cat in categories %}
-                {% if item and item.category == cat %}
-                <option selected>{{cat}}</option>
-                {% else %}
-                <option>{{cat}}</option>
-                {% endif %}
-            {% endfor %}
-        </select>
-    </div>
 
-	<div>
-		<input type="submit" value="Submit">
-	</div>
-</form>
+        <div class="input-item">
+            <div>
+                <label for="description">Description</label>
+            </div>
+            <textarea rows="5" type="description" name="description"class="text-input">{{ item.description if item else '' }}
+            </textarea>
+        </div>
+
+        <div class="input-item">
+            <div>
+                <label for="category">Sport</label>
+            </div>
+            <select name=category>
+                {% for cat in categories %}
+                    {% if item and item.category == cat %}
+                    <option selected>{{cat}}</option>
+                    {% else %}
+                    <option>{{cat}}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="input-item">
+            <input type="submit" value="Submit">
+        </div>
+    </form>
+{% endblock %}

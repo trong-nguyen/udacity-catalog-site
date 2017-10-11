@@ -1,5 +1,5 @@
 <div class="header">
-    <div class="header-inner">
+    <div class="header-inner limited-view">
         <div class="left-column">
             <h1>Sport Catalog</h1>
         </div>
@@ -13,9 +13,9 @@
 
         <div class="right-column">
             {% if not session.email %}
-            <a href="{{ url_for('login') }}">Log in</a>
+            <a href="{{ url_for('login') }}" class="button">Log in</a>
             {% else %}
-            <a href="{{ url_for('logout') }}">Log out</a>
+            <a href="{{ url_for('logout') }}" class="button">Log out</a>
             {% endif %}
         </div>
     </div>

@@ -5,13 +5,11 @@
 {% endblock %}
 
 {% block content %}
-    <div>
-	   {% include "header.html" %}
-    </div>
-	<div class="inventory">
+	<div class="inventory limited-view">
 		<div class="block" id="category-panel">
 			{% include "categories.html" %}
 		</div>
+        <div class="divider"></div>
 		<div class="block" id="item-panel">
             {% if session.email %}
                 <div class="crud-button">

@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {% block form_title %}{% endblock %}
+{% endblock %}
+
+{% block content %}
+    <div class="block limited-view center-view">
+        {% block form_content %}{% endblock %}
+    </div>
+
+{% endblock %}
