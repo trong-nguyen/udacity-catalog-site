@@ -4,10 +4,11 @@ from sqlalchemy.orm import sessionmaker, relationship
 from sqlalchemy import create_engine
 from datetime import datetime
 
-DB_NAME = 'catalog.db'
+DB_NAME = 'catalog'
 
-# create the SQL engine
-engine = create_engine('sqlite:///{}'.format(DB_NAME))
+# create a SQL engine to PostgreSQL
+# https://stackoverflow.com/questions/23839656/sqlalchemy-no-password-supplied-error
+engine = create_engine('postgresql:///{}'.format(DB_NAME))
 
 # initiate and bind it to the Alchemy layer
 Base = declarative_base()

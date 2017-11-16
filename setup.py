@@ -1,36 +1,14 @@
 import sys
 import os
-from models import session, DB_NAME
+from models import session
 from models import Sport, Gear, User
 
 
-def is_db_ok(name):
-    if not os.path.exists(name):
+def is_db_ok():
+    try:
+        from models import engine
         return True
-
-    q = (
-        'database {} exists, erase it?'
-        ' (y to proceed)'
-        ).format(name)
-    inp = raw_input(q)
-
-    if inp == 'y':
-        # We have to remove the database
-        # and rewire its internals
-        os.remove(name)
-
-        from models import Base, create_engine
-
-        # recreate the SQL engine
-        engine = create_engine('sqlite:///{}'.format(name))
-
-        # rebinding Base's engine
-        Base.metadata.bind = engine
-
-        # recreate the database
-        Base.metadata.create_all(engine)
-        return True
-    else:
+    except:
         return False
 
 
@@ -199,5 +177,5 @@ def populate_data(session):
 
 
 if __name__ == '__main__':
-    if is_db_ok(DB_NAME):
+    if is_db_ok():
         populate_data(session)
