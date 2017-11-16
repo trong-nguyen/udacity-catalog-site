@@ -7,6 +7,7 @@ from models import Sport, Gear, User
 def is_db_ok():
     try:
         from models import engine
+        print 'Database ok!'
         return True
     except:
         return False
