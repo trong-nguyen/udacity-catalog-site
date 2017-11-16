@@ -175,6 +175,7 @@ def populate_data(session):
     #     user.hash_password(user_data[i]['password'])
     session.add_all(users)
     session.commit()
+    print 'Database was successfully populated!'
 
 
 if __name__ == '__main__':
