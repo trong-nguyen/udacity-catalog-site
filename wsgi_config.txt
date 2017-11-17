@@ -2,12 +2,12 @@
         ServerName SportCatalog
         ServerAdmin trongn.com
         WSGIScriptAlias / /var/www/catalog/catalog.wsgi
-        <Directory /var/www/catalog/catalog-app/>
+        <Directory /var/www/catalog/catalog/>
             Order allow,deny
             Allow from all
         </Directory>
-        Alias /static /var/www/catalog/catalog-app/static
-        <Directory /var/www/catalog/catalog-app/static/>
+        Alias /static /var/www/catalog/catalog/static
+        <Directory /var/www/catalog/catalog/static/>
             Order allow,deny
             Allow from all
         </Directory>
