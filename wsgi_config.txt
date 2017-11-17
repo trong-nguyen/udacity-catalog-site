@@ -1,13 +1,9 @@
 <VirtualHost *:80>
-        ServerName SportCatalog
+        ServerName 54.85.31.69
         ServerAdmin trongn.com
+        WSGIDaemonProcess catalog user=catalog group=catalog threads=5
         WSGIScriptAlias / /var/www/catalog/catalog.wsgi
-        <Directory /var/www/catalog/catalog/>
-            Order allow,deny
-            Allow from all
-        </Directory>
-        Alias /static /var/www/catalog/catalog/static
-        <Directory /var/www/catalog/catalog/static/>
+        <Directory /var/www/catalog>
             Order allow,deny
             Allow from all
         </Directory>
