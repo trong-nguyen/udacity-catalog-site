@@ -1,0 +1,14 @@
+<VirtualHost *:80>
+    ServerName 54.85.31.69
+    ServerAdmin nguyentrong@gmail.com
+    WSGIDaemonProcess catalogapp user=catalog group=catalog home=/var/www/catalog/catalog
+    WSGIProcessGroup catalogapp
+    WSGIScriptAlias / /var/www/catalog/catalog.wsgi
+    <Directory /var/www/catalog>
+        Order allow,deny
+        Allow from all
+    </Directory>
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    LogLevel warn
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
