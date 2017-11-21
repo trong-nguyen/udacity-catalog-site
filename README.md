@@ -1,5 +1,5 @@
-# Udacity Catalog Site
-A Catalog Site For Full-stack Practice Purposes
+# Catalog Site
+An e-Catalog displays a collection of sport gears. Data is stored in database and served via a web app interface. Item data modification is allowed for authenticated users. Social login and registration are supported. The stack used is Flask, SQLAlchemy and PostgreSQL. Documentation is carefully constructed and beautifully presented by Apiary.
 
 ## Dependencies
 
