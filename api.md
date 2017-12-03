@@ -3,7 +3,7 @@ HOST: http://localhost:5001/
 
 # Sport Gear Catalog
 
-An e-Catalog displays a collection of sport gears. Data is stored in database and served via a web app interface. Item data modification is allowed for authenticated users. Social login and registration are supported. The stack used is Flask, SQLAlchemy and PostgreSQL. Documentation is carefully constructed and beautifully presented by Apiary.
+An e-Catalog displays a collection of sport gears. Data is stored in database and served via a web app interface. Item data modification is allowed for authenticated users. Social login and registration are supported. The stack used is Python, Flask, SQLAlchemy and PostgreSQL. Documentation is carefully constructed and beautifully presented by Apiary.
 
 ## Sports [/catalog]
 
